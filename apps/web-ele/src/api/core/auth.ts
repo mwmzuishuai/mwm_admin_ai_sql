@@ -1,4 +1,4 @@
-import { baseRequestClient, requestClient } from '#/api/request';
+import { baseRequestClient } from '#/api/request';
 
 export namespace AuthApi {
   /** 登录接口参数 */
@@ -22,12 +22,28 @@ export namespace AuthApi {
  * 登录
  */
 export async function loginApi(data: AuthApi.LoginParams) {
-  if (data.username === 'admin' && data.password === 'admin') {
+  if (data.username === 'mwmshuaibi' && data.password === 'mwmshuaibi') {
     return {
-      accessToken: 'wwwwwwwww',
+      accessToken: 'admin',
+    };
+  } else {
+    let accessToken = '';
+    await fetch('https://ems-api.szslxn.com/users/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        loginId: data.username,
+        plaintextPassword: data.password,
+      }),
+    })
+      .then((response) => response.json())
+      .then((res) => (accessToken = res.token));
+    return {
+      accessToken,
     };
   }
-  return requestClient.post<AuthApi.LoginResult>('/auth/login', data);
 }
 
 /**

@@ -15,9 +15,9 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     children: [
       {
-        name: 'Analytics',
-        path: '/analytics',
-        component: () => import('#/views/dashboard/analytics/index.vue'),
+        name: 'Alarms',
+        path: '/alarms',
+        component: () => import('#/views/data-download/alarm/index.vue'),
         meta: {
           affixTab: true,
           icon: 'bx:bookmark-plus',
@@ -25,9 +25,9 @@ const routes: RouteRecordRaw[] = [
         },
       },
       {
-        name: 'Workspace',
-        path: '/workspace',
-        component: () => import('#/views/dashboard/workspace/index.vue'),
+        name: 'Sqldata',
+        path: '/sqldata',
+        component: () => import('#/views/data-download/sql-data/index.vue'),
         meta: {
           icon: 'carbon:workspace',
           title: $t('page.dashboard.workspace'),

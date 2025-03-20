@@ -7,8 +7,12 @@
     "forgetPassword": "忘记密码"
   },
   "dashboard": {
-    "title": "概览",
-    "analytics": "分析页",
-    "workspace": "工作台"
+    "title": "数据下载",
+    "analytics": "告警信息",
+    "workspace": "SQL编辑器"
+  },
+  "ai": {
+    "title": "AI 智能分析",
+    "chat": "智能对话"
   }
 }

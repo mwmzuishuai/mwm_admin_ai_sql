@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-import { $t } from '@vben/locales';
-
-import InputItem from '../input-item.vue';
-import SwitchItem from '../switch-item.vue';
-
 const props = defineProps<{ disabled: boolean }>();
 
 const copyrightEnable = defineModel<boolean>('copyrightEnable');
@@ -21,7 +16,8 @@ const itemDisabled = computed(() => props.disabled || !copyrightEnable.value);
 </script>
 
 <template>
-  <SwitchItem v-model="copyrightEnable" :disabled="disabled">
+  <div></div>
+  <!-- <SwitchItem v-model="copyrightEnable" :disabled="disabled">
     {{ $t('preferences.copyright.enable') }}
   </SwitchItem>
 
@@ -40,5 +36,5 @@ const itemDisabled = computed(() => props.disabled || !copyrightEnable.value);
   </InputItem>
   <InputItem v-model="copyrightIcpLink" :disabled="itemDisabled">
     {{ $t('preferences.copyright.icpLink') }}
-  </InputItem>
+  </InputItem> -->
 </template>
