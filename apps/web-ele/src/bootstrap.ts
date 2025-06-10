@@ -1,4 +1,6 @@
 import { createApp, watchEffect } from 'vue';
+// eslint-disable-next-line n/no-extraneous-import
+import ElementPlusX from 'vue-element-plus-x';
 
 import { registerAccessDirective } from '@vben/access';
 import { preferences } from '@vben/preferences';
@@ -34,7 +36,8 @@ async function bootstrap(namespace: string) {
 
   // 配置路由及路由守卫
   app.use(router);
-
+  // 配置Element Plus
+  app.use(ElementPlusX);
   // 动态更新标题
   watchEffect(() => {
     if (preferences.app.dynamicTitle) {

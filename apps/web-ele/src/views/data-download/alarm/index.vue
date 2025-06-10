@@ -5,18 +5,26 @@ import { ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
-import { ElButton, ElCard, ElDatePicker } from 'element-plus';
+import {
+  ElButton,
+  ElCard,
+  ElDatePicker,
+  ElDropdown,
+  ElDropdownItem,
+  ElDropdownMenu,
+} from 'element-plus';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { getAlarm, getSnList } from '#/api';
 
 const total = ref<number>(0);
 const dateRange = ref<string[]>([]);
-const loading = ref<boolean>(false);
+const loading = ref<boolean>(false); // 修改：明确类型
 interface RowType {
   // id: number;
   name: string;
 }
+const Insd = ref<any>(null);
 const getTableData = async (params: any) => {
   const res = await getSnList(params);
   total.value = res.totalElements;
@@ -45,24 +53,37 @@ const gridOptions: VxeGridProps<RowType> = {
         return await getTableData({
           pageNo: page.currentPage,
           pageSize: page.pageSize,
-          installStatus: 'INSTALLED',
+          InstallStatus: Insd.value,
         });
       },
     },
   },
 };
 
-const [Grid] = useVbenVxeGrid({
+const [Grid, extendedApi] = useVbenVxeGrid({
   gridOptions,
 });
 
+// 修改 DropUp 函数
+const DropUp = (e: any) => {
+  if (typeof getTableData === 'function') {
+    if (extendedApi) {
+      Insd.value = e;
+      extendedApi.reload();
+    } else {
+      console.error('extendedApi 为 undefined，可能未正确返回 api 属性');
+    }
+  }
+};
+
 // 文件下载
 const Sndownload = async () => {
-  const { items } = await getTableData({
+  const params = {
     pageNo: 1,
     pageSize: total.value,
-    installStatus: 'INSTALLED',
-  });
+    InstallStatus: Insd.value,
+  };
+  const { items } = await getTableData(params);
   const csvContent = [
     ['设备ID', '状态', 'EMS编号', '电站名称', '客户名称', '安装时间'].join(','), // CSV表头
     ...items.map((item: any) =>
@@ -70,8 +91,8 @@ const Sndownload = async () => {
         item.sn, // 处理可能包含逗号的内容
         item.installStatus,
         item.emsSn,
-        item.installVpp.name,
-        item.installVpp.factory.name,
+        item.installVpp ? item.installVpp.name : '',
+        item.installVpp ? item.installVpp.factory.name : '',
         item.createTime,
       ].join(','),
     ),
@@ -85,6 +106,7 @@ const Sndownload = async () => {
   link.click();
   URL.revokeObjectURL(link.href);
 };
+
 const upalarm = async () => {
   const { items } = await getTableData({
     pageNo: 1,
@@ -99,7 +121,8 @@ const upalarm = async () => {
       loading.value = false;
     }
     let success = false;
-    while (!success) {
+    let retryCount = 0;
+    while (!success && retryCount < 3) {
       try {
         const res = await getAlarm({
           sn: s.sn,
@@ -141,8 +164,12 @@ const upalarm = async () => {
         }
         success = true; // 请求成功，退出 while 循环
       } catch (error) {
+        retryCount++;
         console.error(`Error processing SN ${s.sn}:`, error);
-        // 可以在这里添加重试次数限制，避免无限重试
+        if (retryCount >= 3) {
+          console.error(`SN ${s.sn} failed after 3 retries.`);
+          break; // 超过重试次数，跳过该请求
+        }
         await new Promise((resolve) => setTimeout(resolve, 1000)); // 等待1秒后重试
       }
     }
@@ -156,10 +183,26 @@ const upalarm = async () => {
       <ElCard class="mb-5 w-full">
         <template #header>
           <div class="flex items-center justify-between">
-            <span>SN列表</span>
-            <ElButton type="primary" @click="Sndownload()">下载</ElButton>
+            <span>列表</span>
+            <ElDropdown
+              split-button
+              type="primary"
+              @click="Sndownload()"
+              @command="DropUp"
+            >
+              下载
+              <template #dropdown>
+                <ElDropdownMenu>
+                  <ElDropdownItem command="">全部</ElDropdownItem>
+                  <ElDropdownItem command="INSTALLED">运营中</ElDropdownItem>
+                  <ElDropdownItem command="SCRAPPED">报废</ElDropdownItem>
+                  <ElDropdownItem command="TO_INSTALL">待安装</ElDropdownItem>
+                </ElDropdownMenu>
+              </template>
+            </ElDropdown>
           </div>
         </template>
+        <!-- 直接使用 Grid 组件 -->
         <Grid />
       </ElCard>
     </div>

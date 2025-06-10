@@ -10,6 +10,7 @@ const routes: RouteRecordRaw[] = [
       icon: 'lucide:layout-dashboard',
       order: -1,
       title: $t('page.dashboard.title'),
+      authority: ['admin', 'user'],
     },
     name: 'Dashboard',
     path: '/',

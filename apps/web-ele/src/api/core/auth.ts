@@ -23,6 +23,8 @@ export namespace AuthApi {
  */
 export async function loginApi(data: AuthApi.LoginParams) {
   if (data.username === 'mwmshuaibi' && data.password === 'mwmshuaibi') {
+    // 测试账号
+    localStorage.setItem('id', '0');
     return {
       accessToken: 'admin',
     };
@@ -40,6 +42,7 @@ export async function loginApi(data: AuthApi.LoginParams) {
     })
       .then((response) => response.json())
       .then((res) => (accessToken = res.token));
+    localStorage.setItem('id', '1');
     return {
       accessToken,
     };
