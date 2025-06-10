@@ -250,8 +250,8 @@ catalogs:
       specifier: ^7.1.0
       version: 7.1.0
     globals:
-      specifier: ^15.14.0
-      version: 15.15.0
+      specifier: ^16.2.0
+      version: 16.2.0
     happy-dom:
       specifier: ^15.11.7
       version: 15.11.7
@@ -729,7 +729,7 @@ importers:
         version: 9.33.0(eslint@9.22.0(jiti@2.4.2))
       globals:
         specifier: 'catalog:'
-        version: 15.15.0
+        version: 16.2.0
       jsonc-eslint-parser:
         specifier: 'catalog:'
         version: 2.4.0
@@ -5968,6 +5968,10 @@ packages:
 
   globals@15.15.0:
     resolution: {integrity: sha512-7ACyT3wmyp3I61S4fG682L0VA2RGD9otkqGJIwNUMF1SWUombIIk+af1unuDYgMm082aHYwD+mzJvv9Iu8dsgg==}
+    engines: {node: '>=18'}
+
+  globals@16.2.0:
+    resolution: {integrity: sha512-O+7l9tPdHCU320IigZZPj5zmRCFG9xHmx9cU8FqU2Rp+JN714seHV+2S9+JslCpY4gJwU2vOGox0wzgae/MCEg==}
     engines: {node: '>=18'}
 
   globalthis@1.0.4:
@@ -12332,7 +12336,7 @@ snapshots:
       chai: 5.2.0
       tinyrainbow: 1.2.0
 
-  '@vitest/mocker@2.1.9(vite@5.4.14(@types/node@22.13.10)(sass@1.80.6)(terser@5.39.0))':
+  '@vitest/mocker@2.1.9(vite@5.4.14(@types/node@22.13.10)(terser@5.39.0))':
     dependencies:
       '@vitest/spy': 2.1.9
       estree-walker: 3.0.3
@@ -14697,6 +14701,8 @@ snapshots:
   globals@14.0.0: {}
 
   globals@15.15.0: {}
+
+  globals@16.2.0: {}
 
   globalthis@1.0.4:
     dependencies:
@@ -18224,7 +18230,7 @@ snapshots:
   vitest@2.1.9(@types/node@22.13.10)(happy-dom@15.11.7)(sass@1.80.6)(terser@5.39.0):
     dependencies:
       '@vitest/expect': 2.1.9
-      '@vitest/mocker': 2.1.9(vite@5.4.14(@types/node@22.13.10)(sass@1.80.6)(terser@5.39.0))
+      '@vitest/mocker': 2.1.9(vite@5.4.14(@types/node@22.13.10)(terser@5.39.0))
       '@vitest/pretty-format': 2.1.9
       '@vitest/runner': 2.1.9
       '@vitest/snapshot': 2.1.9
